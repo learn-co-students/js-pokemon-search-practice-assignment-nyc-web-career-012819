@@ -12,9 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
       divFrame.appendChild(h1)
       h1.setAttribute('class', 'center-text')
       h1.innerText = creature.name
-      h1.addEventListener("click", function() {
-        console.log(this.parentNode)
-      })
 
       const divImage = document.createElement('div')
       divFrame.appendChild(divImage)
