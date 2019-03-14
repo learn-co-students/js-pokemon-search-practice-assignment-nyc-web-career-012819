@@ -1,44 +1,58 @@
 document.addEventListener('DOMContentLoaded', () => {
-  console.log(POKEMON)
-  //YOUR CODE HERE
-  let userInput = document.getElementById('pokemon-search-input').value;
+  let pokemons = POKEMON;
+  // let pokemonContainer = document.getElementById('pokemon-container');
+  let pokemonContainer = document.querySelector('#pokemon-container');
+  // let userInput = document.getElementById('pokemon-search-input').value;
+  let pokemonSearch = document.getElementById('pokemon-search-input');
 
-  let foundPokemon = POKEMON.filter(function(pokemon){
-    return userInput === pokemon['name'];
+  function searchPokemon(pokemons) {
+
+    pokemons.forEach(function(pokemon) {
+      // let pokemonCard = document.createElement('div');
+      // pokemonCard.className = 'pokemon-card';
+      // pokemonCard.innerHTML = `
+      // <div class="pokemon-frame">
+      //   <h1 class="center-text">charizard</h1>
+      //   <div class="pokemon-image">
+      //     <img data-id="7" data-action="flip" class="toggle-sprite" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png">
+      //   </div>
+      // </div>`;
+      // return pokemonContainer.appendChild(pokemonCard);
+      pokemonContainer.innerHTML += `
+      <div class="pokemon-card">
+      <div class="pokemon-frame">
+      <h1 class="center-text">${pokemon.name}</h1>
+      <div class="pokemon-image">
+      <img data-id="${pokemon.id}" data-action="flip" class="toggle-sprite" src="${pokemon.sprites.front}">
+      </div>
+      </div>
+      </div>`;
+    });
+  }
+  searchPokemon(pokemons);
+
+  pokemonSearch.addEventListener('input', function(event) {
+    pokemonContainer.innerHTML = '';
+
+    const foundPokes = pokemons.filter(pokemon => {
+      return pokemon.name.includes(event.target.value);
+      // this works.
+    });
+    searchPokemon(foundPokes);
   });
 
-  let pokemonContainer = document.getElementById('pokemon-container');
-
-  let pokemonCard = document.createElement('div')
-  pokemonCard.className = "pokemon-card";
-
-  let pokemonFrame = document.createElement('div')
-  pokemonFrame.className = "pokemon-frame";
-
-  let centerText = document.createElement('h1')
-  centerText.className = "center-text";
-
-  let pokemonImg = document.createElement('div')
-  pokemonImg.className = "pokemon-image";
-
-  let flip = document.createElement('img')
-  flip.className = "toggle-sprite";
-
-  // make the sentence disappear removeChild
-  // userInput, if this is true then replace the sentence with do removeChild(the sentence)
-
-
-  // pokemonContainer.removeChild(document.getElementsByTagName('center'));
-
-  pokemonContainer.appendChild(pokemonCard);
-  pokemonCard.appendChild(pokemonFrame);
-  pokemonFrame.appendChild(centerText);
-  pokemonFrame.appendChild(pokemonImg);
-  pokemonImg.appendChild(flip);
-
-  centerText[0].innerText = foundPokemon[0].name;
-  console.log('here', pokemonCard)
-  // appendChild
+  pokemonContainer.addEventListener('click', event => {
+    if (event.target.className === 'toggle-sprite') {
+      let chosenOne = pokemons.find(pokemon => {
+        // debugger
+        return pokemon.id === parseInt(event.target.dataset.id);
+      });
+      console.log(chosenOne);
+      event.target.src === chosenOne.sprites.front
+        ? event.target.src = chosenOne.sprites.back
+        : event.target.src = chosenOne.sprites.front;
+    }
+  });
 
 });
 
